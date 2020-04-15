@@ -279,7 +279,8 @@ impl<'a> Images<'a> {
 }
 
 /// Interface for accessing and manipulating a docker container
-pub struct Container<'a> {
+pub struct
+Container<'a> {
     docker: &'a Docker,
     id: Cow<'a, str>,
 }
@@ -363,6 +364,11 @@ impl<'a> Container<'a> {
         let tcp_stream = self.attach_raw().await?;
 
         Ok(TtyMultiPlexer::new(tcp_stream))
+    }
+
+    // Commit any changes to the current container a new docker image.
+    pub async fn commit(&self) -> Result<String>{
+        self.docker.post(&format!("/commit?container={}", self.id), None).await
     }
 
     /// Returns a set of changes made to the container instance
