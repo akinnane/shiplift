@@ -368,7 +368,7 @@ impl<'a> Container<'a> {
 
     // Commit any changes to the current container a new docker image.
     pub async fn commit(&self) -> Result<String>{
-        self.docker.post(&format!("/commit?container={}", self.id), None).await
+        self.docker.post_json(&format!("/commit?container={}", self.id), None).await
     }
 
     /// Returns a set of changes made to the container instance
